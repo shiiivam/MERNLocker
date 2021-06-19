@@ -94,6 +94,11 @@ router.post('/signin',async (req,res)=>{
                 // To generate JWT on signing in
                 const token = await userLogin.generateAuthToken();
                 console.log(token);
+                // Storing tokie n cookie
+                res.cookie("jwtoken", token, {
+                    expires: new Date(Date.now() + 25892000000),
+                     httpOnly: true
+                });
                 return res.status(201).json({message:"user logged in successfully"});
             }else{
                 return res.status(400).json({error:"Invalid Credentials"});
