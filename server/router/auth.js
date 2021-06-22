@@ -97,7 +97,7 @@ router.post('/signin',async (req,res)=>{
                 // Storing tokie n cookie
                 res.cookie("jwtoken", token, {
                     expires: new Date(Date.now() + 25892000000),
-                     httpOnly: true
+                    httpOnly:true
                 });
                 return res.status(201).json({message:"user logged in successfully"});
             }else{
