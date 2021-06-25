@@ -3,13 +3,16 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 // Importing the model
 const User = require('../models/userSchema');
+// Fort authenticating
+const authenticate = require('../middleware/authenticate');
 
 
-router.get('/',(req,res)=>{
-    res.send('Hello world');
-})
+// router.get('/',(req,res)=>{
+//     res.send('Hello world');
+// })
 
 // Promisises version
 
@@ -111,5 +114,10 @@ router.post('/signin',async (req,res)=>{
     }   
 })
 
+router.get('/about', authenticate, (req,res)=>{
+    console.log("Hi About");
+    res.status(200).send(req.rootUser);
+
+})
 
 module.exports = router;
