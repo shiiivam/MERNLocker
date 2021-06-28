@@ -114,10 +114,44 @@ router.post('/signin',async (req,res)=>{
     }   
 })
 
-router.get('/about', authenticate, (req,res)=>{
-    console.log("Hi About");
-    res.status(200).send(req.rootUser);
+// router.get('/about', authenticate, (req,res)=>{
+//     console.log("Hi About");
+//     res.status(200).send(req.rootUser);
 
+// })
+
+// Get userdata for contact us and homepage
+router.get('/getdata',authenticate, (req, res) => {
+    // console.log()
+    res.send(req.rootUser);
+})
+
+// Contact us page
+router.post('/contact', authenticate, async (req,res)=>{
+
+    try{
+
+
+        const {name, email, phone, message} = req.body;
+        console.log(req.body);
+        if(!name || !email || !phone || !message){
+            console.log("Error in contact form");
+            return res.json({error: "Please fill all fields"});
+        }
+        const userContact = await User.findOne({_id:req.UserID});
+        console.log(userContact);
+        if(userContact){
+            const userMessage = await userContact.addMessage(name, email, phone, message);
+
+            await userContact.save();
+            
+            res.status(201).json({message:"User Contact successfully"});
+        }
+    }catch(err){
+        console.log(err);
+        res.json(err);
+    }
+    
 })
 
 module.exports = router;
